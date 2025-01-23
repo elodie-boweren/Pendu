@@ -9,15 +9,27 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (190,190,190)
 PINK = (255,192,203)
+BLUE = (40, 120, 230)
+GREEN = (40, 230, 120)
 
 screen = pygame.display.set_mode((800, 600))
+center_x, center_y = 400, 300
+clock = pygame.time.Clock()
+font = pygame.font.SysFont('Comic Sans MS,Arial', 24)
+prompt = font.render('Entrez un nombre : ', True, BLUE)
+prompt_rect = prompt.get_rect(center=(center_x, center_y))
+user_input_value = ""
+user_input = font.render(user_input_value, True, GREEN)
+user_input_rect = user_input.get_rect(topleft=prompt_rect.topright)
+
 title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
 
 
-file = ["words.txt"]
-lettres_trouvees = []
+words = random.choice(open("words.txt").read().splitlines())
+guess_words = words
+found_letters = []
 attempts = 7
 
 def menu():
@@ -79,34 +91,30 @@ def write(texte, text_font, couleur, x, y):
     texte_surface = text_font.render(texte, True, couleur)
     screen.blit(texte_surface, (x, y))
 
-def find_word():
-    with open("words.txt","r") as f:
-        content = f.readline()
-        word = list(content.random())
 
 def play_game():
-    global word, lettres_trouvees, attempts
+    global guess_words, found_letters, attempts
     run = True
     while run :
         screen.fill(WHITE)
 
-        lettres_affichees = " ".join([lettre if lettre in lettres_trouvees else "_" for lettre in word])
-        write(lettres_affichees, text_font, BLACK, 600, 300)
+        letters_shown = " ".join([letter if letter in found_letters else "_" for letter in guess_words])
+        write(letters_shown, text_font, BLACK, 600, 300)
 
         write(f"Attempts remaining: {attempts}", text_font, BLACK, 600, 350)
  
-        lettres_deja_essayees = " ".join(lettres_trouvees)
-        write(f"Letters tried: {lettres_deja_essayees}", text_font_bold, BLACK, 600, 400)
+        letters_already_tried = " ".join(found_letters)
+        write(f"Letters tried: {letters_already_tried}", text_font_bold, BLACK, 600, 400)
         
         draw_hangman(attempts)
 
-        if all([lettre in lettres_trouvees for lettre in word]):
+        if all([letter in found_letters for letter in guess_words]):
             write("Congrats! You won !", text_font, BLACK, 600, 450)
             pygame.display.update()
             play_game()
         
         if attempts == 0:
-            write(f"Perdu ! Le mot était: {word}", text_font, BLACK, 600, 450)
+            write(f"Perdu ! Le mot était: {guess_words}", text_font, BLACK, 600, 450)
             pygame.display.update()
             play_game()
         
@@ -115,22 +123,38 @@ def play_game():
                 run = False
             if event.type == pygame.KEYDOWN:
                 if event.key >= pygame.K_a and event.key <= pygame.K_z:
-                    lettre = chr(event.key)
-                    if lettre not in lettres_trouvees:
-                        lettres_trouvees.append(lettre)
-                        if lettre not in word:
+                    letter = chr(event.key)
+                    if letter not in found_letters:
+                        found_letters.append(letter)
+                        if letter not in guess_words:
                             attempts -= 1
 
         pygame.display.update()
     pygame.quit()
 
-
 def add_word():
-    screen.fill(WHITE) 
-    key = pygame.key.get_pressed()
-    display_hangman()
-    text("Type your word, or key Tab to return to main menu", text_font, (BLACK), 430, 200)
-    for event in pygame.event.get():
-        if key[pygame.K_TAB] == True:
-            return menu()
+    run = True
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                continuer = False
+                break
+            elif event.type == pygame.KEYDOWN:
+                if event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
+                    continuer = False
+                    break
+                elif event.key == pygame.K_BACKSPACE:
+                    user_input_value = user_input_value[:-1]
+                else:
+                    user_input_value += event.unicode
+                    user_input = font.render(user_input_value, True, GREEN)
+                    user_input_rect = user_input.get_rect(topleft=prompt_rect.topright)
+    clock.tick(30)
+    screen.fill(0)
+    screen.blit(prompt, prompt_rect)
+    screen.blit(user_input, user_input_rect)
+    pygame.display.flip()
+# print("La valeur de l'utilisateur convertie en entier est:", int(user_input_value))
+    
+
         
