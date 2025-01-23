@@ -29,9 +29,9 @@ def menu():
     text("Welcome to our", title_font, (BLACK), 400, 50)
     text("Hangman game !", title_font, (BLACK), 400, 90)
     text("What do you want to do ?", text_font, (BLACK), 430, 200)
-    text("P = Play", text_font, (BLACK), 430, 230)
-    text("A = Add word", text_font, (BLACK), 430, 260)
-    text("Q = Quit", text_font, (BLACK), 430, 290)
+    text("1 = Play", text_font, (BLACK), 430, 230)
+    text("2 = Add word", text_font, (BLACK), 430, 260)
+    text("3 = Quit", text_font, (BLACK), 430, 290)
     text("Type your choice", text_font, (BLACK), 430, 320)
     display_hangman()
 
