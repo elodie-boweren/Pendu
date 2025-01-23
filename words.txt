@@ -15,5 +15,3 @@ resilience
 perseverate
 developper
 coding
-
-hello
