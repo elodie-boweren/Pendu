@@ -9,19 +9,8 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (190,190,190)
 PINK = (255,192,203)
-BLUE = (40, 120, 230)
-GREEN = (40, 230, 120)
 
-screen = pygame.display.set_mode((1000, 600))
-center_x, center_y = 400, 300
-clock = pygame.time.Clock()
-font = pygame.font.SysFont('Comic Sans MS,Arial', 24)
-prompt = font.render('Entrez un nombre : ', True, BLUE)
-prompt_rect = prompt.get_rect(center=(center_x, center_y))
-user_input_value = ""
-user_input = font.render(user_input_value, True, GREEN)
-user_input_rect = user_input.get_rect(topleft=prompt_rect.topright)
-
+screen = pygame.display.set_mode((800, 600))
 title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
@@ -34,8 +23,13 @@ attempts = 7
 
 def menu():
     screen.fill(WHITE) 
-    text("Welcome to our \nHangman game!",title_font,(BLACK),400,50)
-    text("What do you want to do ? : \nP. Play \nA. Add word \nQ. Quit \nType your choice:", text_font, (BLACK), 430, 200)
+    text("Welcome to our", title_font, (BLACK), 400, 50)
+    text("Hangman game !", title_font, (BLACK), 400, 90)
+    text("What do you want to do ?", text_font, (BLACK), 430, 200)
+    text("P = Play", text_font, (BLACK), 430, 230)
+    text("A = Add word", text_font, (BLACK), 430, 260)
+    text("Q = Quit", text_font, (BLACK), 430, 290)
+    text("Type your choice", text_font, (BLACK), 430, 320)
     display_hangman()
 
 
@@ -74,7 +68,8 @@ def draw_hangman(attempts):
         pygame.draw.line(screen, BLACK, (100, 125), (175, 50), 10)
         pygame.draw.line(screen, BLACK, (345, 50), (345, 100), 10)
     if attempts <= 5:
-        pygame.draw.circle(screen, BLACK, (345, 130), 30)
+        pygame.draw.circle(screen, PINK, (345, 130),30, 0)
+        pygame.draw.circle(screen, BLACK, (345, 130), 30, 10)
     if attempts <= 4:
         pygame.draw.line(screen, BLACK, (345, 150), (345, 250), 10)
     if attempts <= 3:
@@ -149,7 +144,8 @@ def play_game():
         write(f"Attempts remaining: {attempts}", text_font, BLACK, 600, 350)
  
         letters_already_tried = " ".join(found_letters)
-        write(f"Letters tried: {letters_already_tried}", text_font_bold, BLACK, 600, 400)
+        write(f"Letters tried: ", text_font_bold, BLACK, 600, 400)
+        write(f"{letters_already_tried}", text_font_bold, BLACK, 600, 430)
         
         draw_hangman(attempts)
 
