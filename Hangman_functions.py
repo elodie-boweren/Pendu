@@ -12,7 +12,7 @@ PINK = (255,192,203)
 BLUE = (40, 120, 230)
 GREEN = (40, 230, 120)
 
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((1000, 600))
 center_x, center_y = 400, 300
 clock = pygame.time.Clock()
 font = pygame.font.SysFont('Comic Sans MS,Arial', 24)
