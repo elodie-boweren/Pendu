@@ -16,8 +16,7 @@ text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
 
 
-mots = ["words.txt"]
-mot_a_trouver = random.choice(mots)
+file = ["words.txt"]
 lettres_trouvees = []
 attempts = 7
 
@@ -80,14 +79,18 @@ def write(texte, text_font, couleur, x, y):
     texte_surface = text_font.render(texte, True, couleur)
     screen.blit(texte_surface, (x, y))
 
+def find_word():
+    with open("words.txt","r") as f:
+        content = f.readline()
+        word = list(content.random())
 
 def play_game():
-    global mot_a_trouver, lettres_trouvees, attempts
+    global word, lettres_trouvees, attempts
     run = True
     while run :
         screen.fill(WHITE)
 
-        lettres_affichees = " ".join([lettre if lettre in lettres_trouvees else "_" for lettre in mot_a_trouver])
+        lettres_affichees = " ".join([lettre if lettre in lettres_trouvees else "_" for lettre in word])
         write(lettres_affichees, text_font, BLACK, 600, 300)
 
         write(f"Attempts remaining: {attempts}", text_font, BLACK, 600, 350)
@@ -97,13 +100,13 @@ def play_game():
         
         draw_hangman(attempts)
 
-        if all([lettre in lettres_trouvees for lettre in mot_a_trouver]):
+        if all([lettre in lettres_trouvees for lettre in word]):
             write("Congrats! You won !", text_font, BLACK, 600, 450)
             pygame.display.update()
             play_game()
         
         if attempts == 0:
-            write(f"Perdu ! Le mot était: {mot_a_trouver}", text_font, BLACK, 600, 450)
+            write(f"Perdu ! Le mot était: {word}", text_font, BLACK, 600, 450)
             pygame.display.update()
             play_game()
         
@@ -115,19 +118,19 @@ def play_game():
                     lettre = chr(event.key)
                     if lettre not in lettres_trouvees:
                         lettres_trouvees.append(lettre)
-                        if lettre not in mot_a_trouver:
+                        if lettre not in word:
                             attempts -= 1
 
         pygame.display.update()
     pygame.quit()
 
 
-# def add_word():
-#     screen.fill(WHITE) 
-#     key = pygame.key.get_pressed()
-#     display_hangman()
-#     text("Type your word, or key Tab to return to main menu", text_font, (BLACK), 430, 200)
-#     for event in pygame.event.get():
-#         if key[pygame.K_TAB] == True:
-#             return menu()
+def add_word():
+    screen.fill(WHITE) 
+    key = pygame.key.get_pressed()
+    display_hangman()
+    text("Type your word, or key Tab to return to main menu", text_font, (BLACK), 430, 200)
+    for event in pygame.event.get():
+        if key[pygame.K_TAB] == True:
+            return menu()
         
