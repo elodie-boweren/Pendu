@@ -17,10 +17,11 @@ police = pygame.font.SysFont(None, 40)
 police_titre = pygame.font.SysFont(None, 60)
 
 
-mots = ["python", "pygame", "programming", "ordinateur", "jeu", "pendu", "developpement"]
+mots = ["words.txt"]
 mot_a_trouver = random.choice(mots)
 lettres_trouvees = []
 attempts = 7
+run = True
 
 def afficher_texte(texte, police, couleur, x, y):
     texte_surface = police.render(texte, True, couleur)
@@ -52,8 +53,8 @@ def draw_hangman(attempts):
 def game():
     global mot_a_trouver, lettres_trouvees, attempts
 
-    run = True
-    while True:
+    run=True
+    while run :
         window.fill(WHITE)
 
         lettres_affichees = " ".join([lettre if lettre in lettres_trouvees else "_" for lettre in mot_a_trouver])
