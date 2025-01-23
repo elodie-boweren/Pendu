@@ -27,8 +27,8 @@ while run :
             run = False
         if key[pygame.K_p] == True:
             play_game()
-        # elif key[pygame.K_a] == True:
-        #     add_word()
+        elif key[pygame.K_a] == True:
+            add_word()
         elif key[pygame.K_q] == True:
             run = False
     
