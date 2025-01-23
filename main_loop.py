@@ -4,11 +4,13 @@ from Hangman_functions import *
 
 pygame.init()
 
+#colors used
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GREY = (190,190,190)
 PINK = (255,192,203)
 
+#screen and text formats
 screen = pygame.display.set_mode((800, 600))
 title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 50)
@@ -16,7 +18,7 @@ text_font = pygame.font.SysFont("Arial", 50)
   
 run = True
 while run :
-
+    #to recognize keyboard use
     key = pygame.key.get_pressed()
 
     menu()
