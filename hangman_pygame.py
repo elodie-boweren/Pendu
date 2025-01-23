@@ -17,15 +17,14 @@ police = pygame.font.SysFont(None, 40)
 police_titre = pygame.font.SysFont(None, 60)
 
 
-mots = ["words.txt"]
-mot_a_trouver = random.choice(mots)
-lettres_trouvees = []
+words = random.choice(open('words.txt').read().splitlines())
+guess_words = words
+letter_find = []
 attempts = 7
-run = True
 
-def afficher_texte(texte, police, couleur, x, y):
-    texte_surface = police.render(texte, True, couleur)
-    window.blit(texte_surface, (x, y))
+def display_text(text, police, color, x, y):
+    text_surface = police.render(text, True, color)
+    window.blit(text_surface, (x, y))
 
 
 def draw_hangman(attempts):
@@ -51,29 +50,38 @@ def draw_hangman(attempts):
 
 
 def game():
-    global mot_a_trouver, lettres_trouvees, attempts
+    global guess_words, letter_find, attempts
 
-    run=True
-    while run :
+    run = True
+    while True:
         window.fill(WHITE)
 
-        lettres_affichees = " ".join([lettre if lettre in lettres_trouvees else "_" for lettre in mot_a_trouver])
-        afficher_texte(lettres_affichees, police, BLACK, 600, 300)
+        lettres_affichees = []
 
-        afficher_texte(f"Essais restants: {attempts}", police, BLACK, 600, 350)
+        for lettre in guess_words:
+            if lettre in letter_find:
+                lettres_affichees.append(lettre)
+            else:
+                lettres_affichees.append("_")
+
+        lettres_affichees_str = " ".join(lettres_affichees)
+
+        display_text(lettres_affichees_str, police, BLACK, 600, 300)
+
+        display_text(f"Essais restants: {attempts}", police, BLACK, 600, 350)
  
-        lettres_deja_essayees = " ".join(lettres_trouvees)
-        afficher_texte(f"Lettres essayées: {lettres_deja_essayees}", police, BLACK, 600, 400)
+        lettres_deja_essayees = " ".join(letter_find)
+        display_text(f"Lettres essayées: {lettres_deja_essayees}", police, BLACK, 600, 400)
         
         draw_hangman(attempts)
 
-        if all([lettre in lettres_trouvees for lettre in mot_a_trouver]):
-            afficher_texte("Vous avez gagné !", police, BLACK, 600, 450)
+        if all([lettre in letter_find for lettre in guess_words]):
+            display_text("Vous avez gagné !", police, BLACK, 600, 450)
             pygame.display.update()
             game()
         
         if attempts == 0:
-            afficher_texte(f"Perdu ! Le mot était: {mot_a_trouver}", police, BLACK, 600, 450)
+            display_text(f"Perdu ! Le mot était: {guess_words}", police, BLACK, 600, 450)
             pygame.display.update()
             game()
         
@@ -83,9 +91,9 @@ def game():
             if event.type == pygame.KEYDOWN:
                 if event.key >= pygame.K_a and event.key <= pygame.K_z:
                     lettre = chr(event.key)
-                    if lettre not in lettres_trouvees:
-                        lettres_trouvees.append(lettre)
-                        if lettre not in mot_a_trouver:
+                    if lettre not in letter_find:
+                        letter_find.append(lettre)
+                        if lettre not in guess_words:
                             attempts -= 1
 
         pygame.display.update()
