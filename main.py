@@ -28,7 +28,7 @@ def game():
                 display += "_"
         
         if "_" not in display:
-            print(f">>> You Win ! <<< \nThe word was {solution}")
+            print(f">>> You Win ! <<< \nThe word was {word_choice}")
             play_again = input("Type P to play again and E to exit the game: ")
             if play_again.upper() == "P":
                 game()
