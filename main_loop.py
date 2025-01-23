@@ -11,7 +11,7 @@ GREY = (190,190,190)
 PINK = (255,192,203)
 
 #screen and text formats
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((900, 600))
 title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 50)
 
@@ -27,7 +27,7 @@ while run :
         if event.type == QUIT:
             run = False
         if key[pygame.K_1] == True:
-            play_game()
+            run = play_game()
         elif key[pygame.K_2] == True:
             add_word()
         elif key[pygame.K_3] == True:

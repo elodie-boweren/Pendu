@@ -14,3 +14,10 @@ upgrade
 resilience
 perseverate
 developper
+<<<<<<< HEAD
+coding
+
+test
+test
+=======
+>>>>>>> ee11fc2beaa1a0083aeb25ab4cb03e289b56249e
