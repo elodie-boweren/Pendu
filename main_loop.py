@@ -15,8 +15,10 @@ title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 15)
 
   
+
+
 run = True
-while run :
+while run == True:
 
     key = pygame.key.get_pressed()
 
@@ -25,14 +27,15 @@ while run :
     for event in pygame.event.get():
         if event.type == QUIT:
             run = False
-        if key[pygame.K_p] == True:
-            play_game()
+        if key[pygame.K_1] == True:
+            run = play_game()
         elif key[pygame.K_a] == True:
             add_word()
         elif key[pygame.K_q] == True:
             run = False
     
     pygame.display.update()
-   
+
 pygame.quit()
+
 

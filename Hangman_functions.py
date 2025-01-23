@@ -27,10 +27,7 @@ text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
 
 
-words = random.choice(open("words.txt").read().splitlines())
-guess_words = words
-found_letters = []
-attempts = 7
+
 
 def menu():
     screen.fill(WHITE) 
@@ -68,23 +65,24 @@ def text(text,font, text_color, x, y):
 
 def draw_hangman(attempts):
     if attempts <= 6:
-        pygame.draw.line(screen, BLACK, (50, 450), (250, 450), 10)
-        pygame.draw.line(screen, BLACK, (100, 450), (100, 50), 10)
-        pygame.draw.line(screen, BLACK, (75, 50), (350, 50), 10)
-        pygame.draw.line(screen, BLACK, (100, 125), (175, 50), 10)
-        pygame.draw.line(screen, BLACK, (345, 50), (345, 100), 10)
+        pygame.draw.line(screen, (BLACK), [30, 400], [290, 400], 10)
+        pygame.draw.line(screen, (BLACK), [60, 35], [60, 400], 10)
+        pygame.draw.line(screen, (BLACK), [60, 38], [200, 38], 10)
+        pygame.draw.line(screen, (BLACK), [60, 80], [115, 38], 10)
+        pygame.draw.line(screen, (BLACK), [200, 35], [200, 80], 10)
     if attempts <= 5:
-        pygame.draw.circle(screen, BLACK, (345, 130), 30)
+        pygame.draw.circle(screen, (PINK), [201,115], 35,0)
+        pygame.draw.circle(screen, (BLACK), [201,115], 35,10)
     if attempts <= 4:
-        pygame.draw.line(screen, BLACK, (345, 150), (345, 250), 10)
+        pygame.draw.line(screen, (BLACK), [200, 150], [200, 250], 10) 
     if attempts <= 3:
-        pygame.draw.line(screen, BLACK, (345, 180), (300, 160), 10)
+        pygame.draw.line(screen, (BLACK), [160, 160], [200, 200], 10)
     if attempts <= 2:
-        pygame.draw.line(screen, BLACK, (345, 180), (400, 160), 10)
+        pygame.draw.line(screen, (BLACK), [240, 160], [200, 200], 10)
     if attempts <= 1:
-        pygame.draw.line(screen, BLACK, (345, 250), (300, 285), 10)
+        pygame.draw.line(screen, (BLACK), [160, 290], [200, 250], 10)
     if attempts <= 0:
-        pygame.draw.line(screen, BLACK, (345, 250), (400, 285), 10)
+        pygame.draw.line(screen, (BLACK), [240, 290], [200, 250], 10)
         
 
 def write(texte, text_font, couleur, x, y):
@@ -139,8 +137,14 @@ def add_word():
     menu()
 def play_game():
     global guess_words, found_letters, attempts
-    run = True
-    while run :
+    run_game = True
+    words = ""
+    words = random.choice(open("words.txt").read().splitlines())
+    guess_words = words
+    found_letters = []
+    attempts = 7
+
+    while run_game :
         screen.fill(WHITE)
 
         letters_shown = " ".join([letter if letter in found_letters else "_" for letter in guess_words])
@@ -155,17 +159,24 @@ def play_game():
 
         if all([letter in found_letters for letter in guess_words]):
             write("Congrats! You won !", text_font, BLACK, 600, 450)
+            
             pygame.display.update()
-            play_game()
+            pygame.time.delay(1000)
+            run_game = False
+            return True
         
         if attempts == 0:
             write(f"Perdu ! Le mot était: {guess_words}", text_font, BLACK, 600, 450)
+            pygame.time.delay(1000)
             pygame.display.update()
-            play_game()
-        
+            
+            run_game = False
+            return True
+            
+
         for event in pygame.event.get():
             if event.type == QUIT:
-                run = False
+                run_game = False
             if event.type == pygame.KEYDOWN:
                 if event.key >= pygame.K_a and event.key <= pygame.K_z:
                     letter = chr(event.key)
@@ -173,8 +184,9 @@ def play_game():
                         found_letters.append(letter)
                         if letter not in guess_words:
                             attempts -= 1
-
+    
         pygame.display.update()
+    
     pygame.quit()
 
         
