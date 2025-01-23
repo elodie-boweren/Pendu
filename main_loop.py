@@ -24,11 +24,11 @@ while run :
     for event in pygame.event.get():
         if event.type == QUIT:
             run = False
-        if key[pygame.K_p] == True:
+        if key[pygame.K_1] == True:
             play_game()
-        elif key[pygame.K_a] == True:
+        elif key[pygame.K_2] == True:
             add_word()
-        elif key[pygame.K_q] == True:
+        elif key[pygame.K_3] == True:
             run = False
     
     pygame.display.update()
