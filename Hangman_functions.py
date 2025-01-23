@@ -12,7 +12,7 @@ PINK = (255,192,203)
 BLUE = (40, 120, 230)
 GREEN = (40, 230, 120)
 
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((1000, 600))
 center_x, center_y = 400, 300
 clock = pygame.time.Clock()
 font = pygame.font.SysFont('Comic Sans MS,Arial', 24)
@@ -47,7 +47,7 @@ def display_hangman():
     pygame.draw.line(screen, (BLACK), [60, 80], [115, 38], 10)
     pygame.draw.line(screen, (BLACK), [200, 35], [200, 80], 10)
     # 2 head
-    pygame.draw.circle(screen, (BLACK), [201,115], 35,0)
+    pygame.draw.circle(screen, (PINK), [201,115], 35,0)
     pygame.draw.circle(screen, (BLACK), [201,115], 35,10)
     # 3 chest
     pygame.draw.line(screen, (BLACK), [200, 150], [200, 250], 10) 
@@ -176,30 +176,5 @@ def play_game():
 
         pygame.display.update()
     pygame.quit()
-
-def add_word():
-    run = True
-    while run:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                continuer = False
-                break
-            elif event.type == pygame.KEYDOWN:
-                if event.key in (pygame.K_RETURN, pygame.K_KP_ENTER):
-                    continuer = False
-                    break
-                elif event.key == pygame.K_BACKSPACE:
-                    user_input_value = user_input_value[:-1]
-                else:
-                    user_input_value += event.unicode
-                    user_input = font.render(user_input_value, True, GREEN)
-                    user_input_rect = user_input.get_rect(topleft=prompt_rect.topright)
-    clock.tick(30)
-    screen.fill(0)
-    screen.blit(prompt, prompt_rect)
-    screen.blit(user_input, user_input_rect)
-    pygame.display.flip()
-# print("La valeur de l'utilisateur convertie en entier est:", int(user_input_value))
-    
 
         

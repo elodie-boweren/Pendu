@@ -10,7 +10,7 @@ BLACK = (0, 0, 0)
 GREY = (190,190,190)
 PINK = (255,192,203)
 
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((1000, 600))
 title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 15)
 
