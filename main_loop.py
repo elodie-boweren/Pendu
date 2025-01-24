@@ -15,7 +15,8 @@ screen = pygame.display.set_mode((900, 600))
 title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 50)
 
-  
+player = "player"
+
 run = True
 while run :
     #to recognize keyboard use
@@ -27,12 +28,19 @@ while run :
         if event.type == QUIT:
             run = False
         if key[pygame.K_1] == True:
-            run = play_game()
+            run = play_game(player,7)
         elif key[pygame.K_2] == True:
-            add_word()
+            run = play_game(player,5)
         elif key[pygame.K_3] == True:
+            run = play_game(player,3)      
+        elif key[pygame.K_4] == True:
+            add_word()
+        elif key[pygame.K_5] == True:
+            player = player_choice()
+        elif key[pygame.K_6] == True:
+            run = print_score()
+        elif key[pygame.K_7] == True:
             run = False
-    
     pygame.display.update()
    
 pygame.quit()
