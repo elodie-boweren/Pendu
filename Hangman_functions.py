@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *
-import random
+import json
 
 pygame.init()
 run = True
@@ -17,7 +17,8 @@ title_font = pygame.font.SysFont("Arial", 30, italic = True)
 text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
 
-
+with open("words_groups.json", "r") as file:
+    words_data = json.load(file)
 
 
 #Menu function
@@ -112,16 +113,25 @@ def add_word():
                 if event.key == pygame.K_RETURN:
                     # Save word if not empty
                     if input_text and len(input_text) > 1:
-                        with open("words.txt", "a") as file:
-                            file.write("\n" + input_text.lower())
+                        for level in words_data["difficulty_levels"]:
+                            if len(input_text) <= 5 and level["level"] == "easy":
+                                level["words"].append(input_text.lower())
+                                break
+                            elif len(input_text) >= 6 and len(input_text) <= 7 and level["level"] == "medium":
+                                level["words"].append(input_text.lower())
+                                break
+                            elif len(input_text) >= 8 and level["level"] == "hard":
+                                level["words"].append(input_text.lower())
+                                break
+                        with open("words_groups.json", "w")as file:
+                            json.dump(words_data, file, indent=4)
                         text("Word added successfully!", text_font, BLACK, 400, 350)
                         pygame.display.update()
                         pygame.time.delay(1000)
                         input_active = False
-                #ESC to return to menu
+            
                 elif event.key == pygame.K_ESCAPE:
                     input_active = False
-                #recognize key to erase letter entered
                 elif event.key == pygame.K_BACKSPACE:
                     input_text = input_text[:-1]
                 
@@ -134,59 +144,59 @@ def add_word():
     menu()
 
 #Function to play game
-def play_game():
-    global guess_words, found_letters, attempts
-    run_game = True
-    words = ""
-    words = random.choice(open("words.txt").read().splitlines())
-    guess_words = words
-    found_letters = []
-    attempts = 7
+# def play_game(words_list):
+#     """Play the game using a list of words."""
+#     guess_word = random.choice(words_list)
+#     found_letters = []
+#     attempts = 7
+#     run_game = True
 
-    while run_game :
-        screen.fill(WHITE)
-        #Set screen with _ corresponding to each letter of then word until letter guessed
-        letters_shown = " ".join([letter if letter in found_letters else "_" for letter in guess_words])
-        write(letters_shown, text_font, BLACK, 600, 300)
-        #update the number of attempts remaining
-        write(f"Attempts remaining: {attempts}", text_font, BLACK, 600, 350)
-        #
-        letters_already_tried = " ".join(found_letters)
-        write(f"Letters tried: ", text_font_bold, BLACK, 600, 400)
-        write(f"{letters_already_tried}", text_font_bold, BLACK, 600, 430)
-        #Draw hangman as attempts fail
-        draw_hangman(attempts)
-        #check if word guessed
-        if all([letter in found_letters for letter in guess_words]):
-            write("Congrats! You won !", text_font, BLACK, 600, 450)
-            
-            pygame.display.update()
-            pygame.time.delay(3000)
-            run_game = False
-            return True
-        #check if all attempts have been used and some letters still not guessed
-        if attempts == 0:
-            write(f"Game over! The word was: {guess_words}", text_font, BLACK, 600, 450)
-            
-            pygame.display.update()
-            pygame.time.delay(3000)
-            run_game = False
-            return True
-            
-#main game loop
-        for event in pygame.event.get():
-            if event.type == QUIT:
-                run_game = False
-            if event.type == pygame.KEYDOWN:
-                if event.key >= pygame.K_a and event.key <= pygame.K_z:
-                    letter = chr(event.key)
-                    if letter not in found_letters:
-                        found_letters.append(letter)
-                        if letter not in guess_words:
-                            attempts -= 1
-    
-        pygame.display.update()
-    
-    pygame.quit()
+#     while run_game:
+#         screen.fill(WHITE)
+#         # Display the word with guessed letters or underscores
+#         letters_shown = " ".join([letter if letter in found_letters else "_" for letter in guess_word])
+#         write(letters_shown, text_font, BLACK, 600, 300)
+#         # Update remaining attempts
+#         write(f"Attempts remaining: {attempts}", text_font, BLACK, 600, 350)
+
+#         # Display letters already tried
+#         letters_already_tried = " ".join(found_letters)
+#         write(f"Letters tried: ", text_font_bold, BLACK, 600, 400)
+#         write(f"{letters_already_tried}", text_font_bold, BLACK, 600, 430)
+#         # Draw hangman as attempts fail
+#         draw_hangman(attempts)
+
+#         # Check if the word is fully guessed
+#         if all([letter in found_letters for letter in guess_word]):
+#             write("Congrats! You won!", text_font, BLACK, 600, 450)
+#             pygame.display.update()
+#             pygame.time.delay(3000)
+#             run_game = False
+#             return True
+
+#         # Check if attempts are exhausted
+#         if attempts == 0:
+#             write(f"Game over! The word was: {guess_word}", text_font, BLACK, 600, 450)
+#             pygame.display.update()
+#             pygame.time.delay(3000)
+#             run_game = False
+#             return False
+
+#         # Handle events
+#         for event in pygame.event.get():
+#             if event.type == QUIT:
+#                 run_game = False
+#             if event.type == KEYDOWN:
+#                 if event.key >= K_a and event.key <= K_z:
+#                     letter = chr(event.key)
+#                     if letter not in found_letters:
+#                         found_letters.append(letter)
+#                         if letter not in guess_word:
+#                             attempts -= 1
+
+#         pygame.display.update()
+
+#     pygame.quit()
+
 
         
