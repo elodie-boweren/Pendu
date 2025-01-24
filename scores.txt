@@ -1,0 +1,7 @@
+ 
+ player : 200
+ player : 500
+ player : 800
+ lucas : 200
+ lucas : 500
+ lucas : 800
