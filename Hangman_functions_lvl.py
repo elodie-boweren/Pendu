@@ -16,8 +16,9 @@ text_font = pygame.font.SysFont("Arial", 15)
 text_font_bold = pygame.font.SysFont("Arial", 16, bold = True)
 
 
-words = ["banane","chocolat"]
-guess_words = random.choice(words)
+words = ""
+words = random.choice(open("words.txt").read().splitlines())
+guess_words = words
 found_letters = []
 
 
@@ -163,12 +164,14 @@ def play_game_easy():
         if all([letter in found_letters for letter in guess_words]):
             write("Congrats! You won !", text_font, BLACK, 600, 450)
             pygame.display.update()
-            play_game_easy()
+            pygame.time.delay(3000)
+            return True
         
         if attempts == 0:
             write(f"Perdu ! Le mot était: {guess_words}", text_font, BLACK, 600, 450)
             pygame.display.update()
-            play_game_easy()
+            pygame.time.delay(3000)
+            return True
         
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -212,12 +215,14 @@ def play_game_mid():
         if all([letter in found_letters for letter in guess_words]):
             write("Congrats! You won !", text_font, BLACK, 600, 450)
             pygame.display.update()
-            play_game_mid()
+            pygame.time.delay(3000)
+            return True
         
         if attempts == 0:
             write(f"Perdu ! Le mot était: {guess_words}", text_font, BLACK, 600, 450)
             pygame.display.update()
-            play_game_mid()
+            pygame.time.delay(3000)
+            return True
         
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -281,12 +286,15 @@ def play_game_hard():
         if all([letter in found_letters for letter in guess_words]):
             write("Congrats! You won !", text_font, BLACK, 600, 450)
             pygame.display.update()
-            end_game()
+            pygame.time.delay(3000)
+            return True
+            
         
         if attempts == 0:
             write(f"You loose ! The word was: {guess_words}", text_font, BLACK, 600, 450)
             pygame.display.update()
-            end_game()
+            pygame.time.delay(3000)
+            return True
         
         for event in pygame.event.get():
             if event.type == QUIT:
@@ -298,6 +306,7 @@ def play_game_hard():
                         found_letters.append(letter)
                         if letter not in guess_words:
                             attempts -= 1
+            
 
         pygame.display.update()
 
@@ -332,23 +341,11 @@ while run :
         if event.type == QUIT:
             run = False
         if key[pygame.K_1] == True:
-            play_game_easy()
-            if key[pygame.K_1] == True:
-                play_game_easy
-            if key[pygame.K_2] == True:
-                menu()    
+            run = play_game_easy()    
         if key[pygame.K_2] == True:
-            play_game_mid()
-            if key[pygame.K_1] == True:
-                play_game_easy
-            if key[pygame.K_2] == True:
-                menu() 
+            run = play_game_mid()
         if key[pygame.K_3] == True:
-            play_game_hard()
-            if key[pygame.K_1] == True:
-                play_game_easy
-            if key[pygame.K_2] == True:
-                menu() 
+            run = play_game_hard()
         elif key[pygame.K_4] == True:
             add_word()
         elif key[pygame.K_5] == True:
@@ -357,9 +354,3 @@ while run :
     pygame.display.update()
    
 pygame.quit()
-
-def end_game():
-    screen.fill(WHITE) 
-    text("What do you want to do?", title_font, (BLACK), 400, 50)
-    text("1 = Play again", title_font, (BLACK), 400, 90)
-    text("2 = Back to menu", text_font, (BLACK), 430, 200)
