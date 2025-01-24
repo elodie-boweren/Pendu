@@ -62,7 +62,6 @@ def play_game_with_difficulty():
         print("No words found for the selected difficulty.")
         return False
 
-    global guess_words, found_letters, attempts
     run_game = True
     guess_words = random.choice(words_list)
     found_letters = []
