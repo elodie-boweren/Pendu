@@ -26,11 +26,11 @@ def menu():
     text("Welcome to our", title_font, (BLACK), 400, 50)
     text("Hangman game !", title_font, (BLACK), 400, 90)
     text("What do you want to do ?", text_font, (BLACK), 430, 200)
-    text("1. Play on Easy mode", text_font, (BLACK), 430, 230)
-    text("2. Play on Normal mode", text_font, (BLACK), 430, 250)
-    text("3. Play on Hard mode", text_font, (BLACK), 430, 270)
+    text("1. Play in Easy mode", text_font, (BLACK), 430, 230)
+    text("2. Play in Normal mode", text_font, (BLACK), 430, 250)
+    text("3. Play in Hard mode", text_font, (BLACK), 430, 270)
     text("4. Add word", text_font, (BLACK), 430, 300)
-    text("5. Choice player", text_font, (BLACK), 430, 330)
+    text("5. Player choice", text_font, (BLACK), 430, 330)
     text("6. Scoring table", text_font, (BLACK), 430, 350)
     text("7. Quit", text_font, (BLACK), 430, 390)
     text("Type your choice", text_font, (BLACK), 430, 410)
@@ -154,7 +154,7 @@ def add_word():
                 if event.key == pygame.K_RETURN:
                     # Save word if not empty
                     if input_text and len(input_text) > 1:
-                        with open("words.txt", "a") as file:
+                        with open("words.txt", "a", encoding="utf8") as file:
                             file.write("\n" + input_text.lower())
                         text("Word added successfully!", text_font, BLACK, 400, 350)
                         pygame.display.update()
@@ -179,7 +179,6 @@ def add_word():
 def play_game(player,attempts):
 
     run_game = True
-    words = ""
     words = random.choice(open("words.txt").read().splitlines())
     guess_words = words
     found_letters = []
@@ -189,6 +188,7 @@ def play_game(player,attempts):
         score_game = 500
     elif attempts == 3:
         score_game = 800
+
     while run_game :
         screen.fill(WHITE)
         #Set screen with _ corresponding to each letter of then word until letter guessed
@@ -196,21 +196,21 @@ def play_game(player,attempts):
         write(letters_shown, text_font, BLACK, 600, 300)
         #update the number of attempts remaining
         write(f"Attempts remaining: {attempts}", text_font, BLACK, 600, 350)
-        #
+        
         letters_already_tried = " ".join(found_letters)
         write(f"Letters tried: ", text_font_bold, BLACK, 600, 400)
         write(f"{letters_already_tried}", text_font_bold, BLACK, 600, 430)
         #Draw hangman as attempts fail
-        if attempts == 7:
+        if score_game == 200:
             draw_hangman_easy(attempts)
-        elif attempts == 5:
+        elif score_game == 500:
             draw_hangman_mid(attempts)
-        elif attempts == 3:
+        elif score_game == 800:
             draw_hangman_hard(attempts)
         #check if word guessed
         if all([letter in found_letters for letter in guess_words]):
             write("Congrats! You won !", text_font, BLACK, 600, 450)
-            with open("scores.txt", "a") as score_file:
+            with open("scores.txt", "a", encoding="utf8") as score_file:
                 score_file.write(f"\n {player} : {score_game}")          
             pygame.display.update()
             pygame.time.delay(3000)
